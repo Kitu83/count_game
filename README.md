@@ -5,7 +5,7 @@ The same game viewed on TV emission "Des chiffres et des lettres".
 
 Works in self input too.
 
-## Commandes :
+## Commands :
 
 !cstart : Active game on active IRC channel.
 
