@@ -12,4 +12,4 @@ Works also in self input.
 
 !bon <count> : Purpose a good count, example to find 505 : !bon 100*(2+3)+10-5
 
-!r : Re-display the active count to find.
+!r : Display again the active count to find.
