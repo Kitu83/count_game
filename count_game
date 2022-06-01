@@ -1,0 +1,106 @@
+alias compte {
+  set %nbs 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,25,50,75,100
+  set %resultat $rand(101,999)
+  set %tirage $+($piocher(%nbs),-,$piocher(%nbs),-,$piocher(%nbs),-,$piocher(%nbs),-,$piocher(%nbs),-,$piocher(%nbs))
+  set %approach 0
+  set %approach_nick $false
+}
+alias piocher {
+  var %alea = $rand(1,$numtok($$1,44))
+  set %nbs $deltok($1,%alea,44) 
+  return $gettok($1,%alea,44)
+}
+alias verif {
+  var %c = $replace($remove($$1,$chr(40),$chr(41)),-,-,+,-,*,-,/,-)
+  var %i = 1, %n, %t = %tirage, %chk = $true
+  while (%i <= $numtok(%c,45)) {
+    %n = $gettok(%c,%i,45)
+    if ($istok(%t,%n,45)) {
+      %t = $deltok(%t,$findtok(%t,%n,1,45),45)
+    }
+    else {
+      %chk = $false
+      break
+    }
+    inc %i
+  }
+  if (%chk) return $calc($1)
+  else return %chk
+}
+on *:input:*:{
+  if ($strip($1) == !cstart) {
+    set %count_chan $active
+    .timer -m 1 1 /msg $active Le compte est bon ! tapez !compte
+  }
+  if (($strip($1) == !compte) && ($2 == $null) && (%count_chan == $active)) {
+    compte
+    .timer -m 1 1 /msg $active Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat
+  }
+  else {
+    if (($strip($1) == !bon) && (%count_chan == $active)) {
+      if ($strip($2-) != %resultat) {
+        var %compte = $verif($remove($v1,$chr(32)))
+        if (!%compte) .timer -m 1 1 /echo -a $me Votre calcul ne sera pas évalué car il ne respecte pas le bon format
+        elseif (%compte == %resultat) {
+          .timer -m 1 1 /msg $active 3 $+ $me a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+        }
+        else {
+          if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
+            set %approach %compte
+            set %approach_nick $nick
+            .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+          }
+          else {
+            if (%approach_nick != $false) {
+              .timer -m 1 1 /msg $active Compte approchant pour $me son calcul donne %compte - Meilleur : %approach_nick avec %approach
+            }
+            else {
+              .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+            }
+          }
+        }
+      }
+    }
+    if (($strip($1) == !r) && (%count_chan == $active)) {
+      .timer -m 1 1 /msg # Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat $+  ~ Meilleur : %approach_nick avec %approach
+    }
+  }
+}
+on *:text:*:#:{
+  if (($strip($1) == !cstart) && (($nick isop $chan) || ($nick ishop $chan)) && ($chan == #arts)) {
+    echo -a $nick a activé le compte sur #arts
+    set %count_chan $chan
+    .timer -m 1 1 /msg $chan Le compte est bon ! tapez !compte
+  }
+  if (($strip($1) == !compte) && ($2 == $null) && (%count_chan == #)) {
+    compte
+    msg # Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat
+  }
+  if (($strip($1) == !bon) && (%count_chan == #)) {
+    if ($strip($2-) != %resultat) {
+      var %compte = $verif($remove($v1,$chr(32)))
+      if (!%compte) notice $nick Votre calcul ne sera pas évalué car il ne respecte pas le bon format
+      elseif (%compte == %resultat) {
+        msg # 3 $+ $nick a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+      }
+      else {
+        if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
+          set %approach %compte
+          set %approach_nick $nick
+          msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+        }
+        else {
+          if (%approach_nick != $false) {
+            msg # Compte approchant pour $nick son calcul donne %compte - Meilleur : %approach_nick avec %approach
+          }
+          else {
+            msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+          }
+        }
+      }
+    }
+  }
+  if (($strip($1) == !r) && (%count_chan == #)) {
+    msg # Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat $+  ~ Meilleur : %approach_nick avec %approach
+  }
+}
