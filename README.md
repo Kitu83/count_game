@@ -2,6 +2,7 @@
 ## Count game for mIRC
 
 The same game viewed on TV emission "Des chiffres et des lettres".
+
 Works in self input too.
 
 ## Commandes :
