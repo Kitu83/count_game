@@ -6,7 +6,7 @@ Works also in self input.
 
 ## Commands :
 
-!cstart : Active game on active IRC channel and on in active IRC network.
+!cstart : Active game on active IRC channel and on active IRC network.
 
 !compte : Launch the game.
 
