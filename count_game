@@ -43,19 +43,21 @@ on *:input:*:{
       var %compte = $verif($remove($v1,$chr(32)))
       if (%compte == %resultat) {
         .timer -m 1 1 /msg $active 3 $+ $me a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+        set %approach %compte
+        set %approach_nick $me
       }
       elseif (%compte) {
         if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
           set %approach %compte
-          set %approach_nick $nick
-          .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+          set %approach_nick $me
+          .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me $+ , son calcul donne %compte
         }
         else {
           if (%approach_nick != $false) {
-            .timer -m 1 1 /msg $active Compte approchant pour $me son calcul donne %compte - Meilleur : %approach_nick avec %approach
+            .timer -m 1 1 /msg $active Compte approchant pour $me $+ , son calcul donne %compte - Meilleur : %approach_nick avec %approach
           }
           else {
-            .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+            .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me $+ , son calcul donne %compte
           }
         }
       }
@@ -65,22 +67,23 @@ on *:input:*:{
     if (($strip($1) == !bon) && (%count_chan == $active) && (%count_network == $network)) {
       if ($strip($2-) != %resultat) {
         var %compte = $verif($remove($v1,$chr(32)))
-        if (!%compte) .timer -m 1 1 /echo -a $me Votre calcul ne sera pas évalué car il ne respecte pas le bon format
+        if (!%compte) .timer -m 1 1 /echo -a $me Votre calcul ne sera pas évalué car il ne respecte pas le bon format.
         elseif (%compte == %resultat) {
           .timer -m 1 1 /msg $active 3 $+ $me a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+          set %approach %compte
         }
         else {
           if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
             set %approach %compte
             set %approach_nick $nick
-            .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+            .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me $+ , son calcul donne %compte
           }
           else {
             if (%approach_nick != $false) {
-              .timer -m 1 1 /msg $active Compte approchant pour $me son calcul donne %compte - Meilleur : %approach_nick avec %approach
+              .timer -m 1 1 /msg $active Compte approchant pour $me $+ , son calcul donne %compte - Meilleur : %approach_nick avec %approach
             }
             else {
-              .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me son calcul donne %compte
+              .timer -m 1 1 /msg $active 2Meilleur compte approchant pour $me $+ , son calcul donne %compte
             }
           }
         }
@@ -105,19 +108,21 @@ on *:text:*:#:{
       var %compte = $verif($remove($v1,$chr(32)))
       if (%compte == %resultat) {
         msg # 3 $+ $nick a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+        set %approach %compte
+        set %approach_nick $nick
       }
       elseif (%compte) {
         if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
           set %approach %compte
           set %approach_nick $nick
-          msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+          msg # 2Meilleur compte approchant pour $nick $+ , son calcul donne %compte
         }
         else {
           if (%approach_nick != $false) {
-            msg # Compte approchant pour $nick son calcul donne %compte - Meilleur : %approach_nick avec %approach
+            msg # Compte approchant pour $nick $+ , son calcul donne %compte - Meilleur : %approach_nick avec %approach
           }
           else {
-            msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+            msg # 2Meilleur compte approchant pour $nick $+ , son calcul donne %compte
           }
         }
       }
@@ -126,22 +131,23 @@ on *:text:*:#:{
   if (($strip($1) == !bon) && (%count_chan == #) && (%count_network == $network)) {
     if ($strip($2-) != %resultat) {
       var %compte = $verif($remove($v1,$chr(32)))
-      if (!%compte) notice $nick Votre calcul ne sera pas évalué car il ne respecte pas le bon format
+      if (!%compte) notice $nick Votre calcul ne sera pas évalué car il ne respecte pas le bon format.
       elseif (%compte == %resultat) {
         msg # 3 $+ $nick a trouvé le bon compte ( $+ %resultat $+ ), bravo !
+        set %approach %compte
       }
       else {
         if ($abs($calc(%resultat - %compte)) < $abs($calc(%resultat - %approach))) {
           set %approach %compte
           set %approach_nick $nick
-          msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+          msg # 2Meilleur compte approchant pour $nick $+ , son calcul donne %compte
         }
         else {
           if (%approach_nick != $false) {
-            msg # Compte approchant pour $nick son calcul donne %compte - Meilleur : %approach_nick avec %approach
+            msg # Compte approchant pour $nick $+ , son calcul donne %compte - Meilleur : %approach_nick avec %approach
           }
           else {
-            msg # 2Meilleur compte approchant pour $nick son calcul donne %compte
+            msg # 2Meilleur compte approchant pour $nick $+ , son calcul donne %compte
           }
         }
       }
