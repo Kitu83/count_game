@@ -38,7 +38,7 @@ on *:input:*:{
     .timer -m 1 1 /msg $active Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat
   }
   var %first = $left($strip($1), 1)
-  if ((%first == $chr(40)) || (($isnum(%first)) && (%count_chan == $active) && (%count_network == $network))) {
+  if (((%first == $chr(40)) || (($isnum(%first))) && (%count_chan == $active) && (%count_network == $network))) {
     if ($strip($1-) != %resultat) {
       var %compte = $verif($remove($v1,$chr(32)))
       if (%compte == %resultat) {
@@ -100,7 +100,7 @@ on *:text:*:#:{
     msg # Tirage : $replace(%tirage,-,$+($chr(32),-,$chr(32))) ~ 4Trouvez %resultat
   }
   var %first = $left($strip($1), 1)
-  if ((%first == $chr(40)) || (($isnum(%first)) && (%count_chan == $active) && (%count_network == $network))) {
+  if (((%first == $chr(40)) || (($isnum(%first))) && (%count_chan == $chan) && (%count_network == $network))) {
     if ($strip($1-) != %resultat) {
       var %compte = $verif($remove($v1,$chr(32)))
       if (%compte == %resultat) {
