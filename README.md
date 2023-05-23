@@ -1,6 +1,6 @@
 # Count game for mIRC
 
-The same game viewed on TV emission "Des chiffres et des lettres".
+The same game viewed on TV emission "Des chiffres et des lettres" for mIRC.
 
 Works also in self input.
 
